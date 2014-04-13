@@ -57,6 +57,7 @@ function init() {
 }
 
 function pop(id) {
+	alert("pop(" + id + ")");
 	var image = document.getElementById(id);
 	playAudio(POP_AUDIO, true);
 	image.src = POP_IMAGE;
