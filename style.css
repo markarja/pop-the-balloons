@@ -1,0 +1,27 @@
+body {
+	margin: 0;
+	background-image: url(res/background.png);
+}
+
+.score {
+	font-family: 'Gloria Hallelujah', cursive;
+	z-index: 1; 
+	font-weight: lighter;
+	color: rgb(0,0,0);
+	font-size: 40px;
+	padding-left: 10px;
+	position: fixed;
+	top: -10px;
+	left: 5px;
+}
+
+.time {
+	z-index: 1; 
+	font-family: 'Gloria Hallelujah', cursive;
+	font-weight: lighter;
+	color: rgb(0,0,0);
+	font-size: 50px;
+	position: fixed;
+	bottom: 0px;
+	left: 20px;
+}

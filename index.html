@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=10;no-cache"/>
+	    <meta name="apple-mobile-web-app-capable" content="yes">
+	    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+	 	<link rel="stylesheet" href="style.css" type="text/css">
+		<title>Pop the Balloons</title>
+		<script src="phonegap.js"></script>
+		<script src="app.js"></script>
+	</head>
+	<body onload="init();" id="background">
+		<span id="score" class="score">0</span>
+		<div id="b0">
+			<img id="b0i" onclick="pop('b0')" src="res/b0.png" />
+		</div>
+		<div id="b1">
+			<img id="b1i" onclick="pop('b1')" src="res/b1.png" />
+		</div>
+		<div id="b2">
+			<img id="b2i" onclick="pop('b2')" src="res/b2.png" />
+		</div>
+		<div id="b3">
+			<img id="b3i" onclick="pop('b3')" src="res/b3.png" />
+		</div>
+		<div id="b4">
+			<img id="b4i" onclick="pop('b4')" src="res/b4.png" />
+		</div>
+		<div id="b5">
+			<img id="b5i" onclick="pop('b5')" src="res/b5.png" />
+		</div>		
+		<span id="time" class="time">60</span>
+		<audio id="audioplayer">
+			<source src="res/pop.mp3" type="audio/mp3" />
+		</audio>
+	</body>
+</html>
