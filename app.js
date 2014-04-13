@@ -75,13 +75,13 @@ function playAudio(audioSource, audio) {
 	if(audio) {
 		document.getElementById("audioplayer").src = audioSource;
 		var audio = document.getElementById("audioplayer");
-		/*if(device.platform == "Android") {
+		if(device.platform == "Android") {
 			audio = new Media("/android_asset/www/" + audioSource, 
 					function() { audio.release(); }
 					, onAudioError);
 			audio.play();	
-		} else {*/
+		} else {
 			audio.play();
-		//}
+		}
 	}
 }
