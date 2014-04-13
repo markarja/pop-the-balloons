@@ -27,3 +27,7 @@ body {
 	bottom: 0px;
 	left: 20px;
 }
+
+.balloon {
+	z-index: 2;
+}
