@@ -16,6 +16,7 @@ function init() {
 	};
 	
 	for(var i = 0;i < 6;i++) {
+		document.getElementById("b" + i).style.backgroundImage = "url(res/b" + i + ".png)";
 		document.getElementById("b" + i).style.position = "absolute";
 		document.getElementById("b" + i).style.bottom = "-260px";
 		workerStates.push(0);
@@ -30,7 +31,7 @@ function init() {
 			workerStates[balloon] = 1;
 			balloonWorkers[balloon].onmessage = function(event) {
 				if(event.data.y > window.innerHeight || 
-					document.getElementById("b" + event.data.b).src.indexOf(POP_IMAGE) > -1) {
+					document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) > -1) {
 					this.terminate();
 					workerStates[event.data.b] = 0;
 				} else {
@@ -57,14 +58,14 @@ function init() {
 }
 
 function pop(id) {
-	var image = document.getElementById(id);
+	var element = document.getElementById(id);
 	playAudio(POP_AUDIO, true);
-	image.src = POP_IMAGE;
+	element.style.backgroundImage = "url(" + POP_IMAGE + ")";
 	var timeout = setTimeout(function() {
-		image.style.visibility = "hidden";
-		image.src = "res/" + id + ".png";
-		image.style.bottom = "-260px";
-		image.style.visibility = "visible";
+		element.style.visibility = "hidden";
+		element.style.backgroundImage = "url(res/" + id + ".png)";
+		element.style.bottom = "-260px";
+		element.style.visibility = "visible";
 	}, 300);
 	document.getElementById("score").innerHTML =
 		(document.getElementById("score").innerHTML * 1 + scores[id]);
