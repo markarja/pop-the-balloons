@@ -30,7 +30,7 @@ function init() {
 			workerStates[balloon] = 1;
 			balloonWorkers[balloon].onmessage = function(event) {
 				if(event.data.y > window.innerHeight || 
-					document.getElementById("b" + event.data.b + "i").src.indexOf(POP_IMAGE) > -1) {
+					document.getElementById("b" + event.data.b).src.indexOf(POP_IMAGE) > -1) {
 					this.terminate();
 					workerStates[event.data.b] = 0;
 				} else {
@@ -57,15 +57,14 @@ function init() {
 }
 
 function pop(id) {
-	var element = document.getElementById(id);
-	var image = document.getElementById(id + "i");
+	var image = document.getElementById(id);
 	playAudio(POP_AUDIO, true);
 	image.src = POP_IMAGE;
 	var timeout = setTimeout(function() {
-		element.style.visibility = "hidden";
+		image.style.visibility = "hidden";
 		image.src = "res/" + id + ".png";
-		element.style.bottom = "-260px";
-		element.style.visibility = "visible";
+		image.style.bottom = "-260px";
+		image.style.visibility = "visible";
 	}, 300);
 	document.getElementById("score").innerHTML =
 		(document.getElementById("score").innerHTML * 1 + scores[id]);
@@ -75,7 +74,7 @@ function playAudio(audioSource, audio) {
 	if(audio) {
 		document.getElementById("audioplayer").src = audioSource;
 		var audio = document.getElementById("audioplayer");
-		if(device.platform == "Android") {
+		if(typeof device != "undefined" && device.platform == "Android") {
 			audio = new Media("/android_asset/www/" + audioSource, 
 					function() { audio.release(); }
 					, onAudioError);
