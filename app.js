@@ -86,7 +86,7 @@ function pop(id) {
 	element.style.backgroundImage = "url(" + POP_IMAGE + ")";
 	var timeout = setTimeout(function() {
 		element.style.visibility = "hidden";
-		var deathballoon = Math.floor(Math.random() * 2);
+		var deathballoon = Math.floor(Math.random() * 5);
 		if(deathballoon == 1) {
 			element.style.backgroundImage = "url(" + DEATH_BALLOON + ")";
 		} else {
