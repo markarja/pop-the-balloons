@@ -1,5 +1,6 @@
 var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
+var DEATH_BALLOON = "res/b6.png";
 var MAX_SPEED = 10;
 var scores = {
 	"b0" : 500, "b1" : 300, "b2" : 600,
@@ -8,6 +9,7 @@ var scores = {
 var balloonWorkers = new Array();
 var workerStates = new Array();
 var balloonSpeeds = new Array();
+var gameover = false;
 
 function init() {
 	
@@ -39,8 +41,9 @@ function init() {
 		if(workerStates[balloon] == 0) {
 			balloonWorkers[balloon] = new Worker("balloon.js");
 			var speed = Math.floor(Math.random() * MAX_SPEED - 1) + 1;
-			var limit = Math.floor(Math.random() * window.innerWidth - 50) + 1;
+			var limit = Math.floor(Math.random() * window.innerWidth) + 1;
 			var startX = Math.floor(Math.random() * (window.innerWidth / 2)) + 1;
+			if(limit < startX) limit = startX + 100;
 			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed});
 			workerStates[balloon] = 1;
 			balloonSpeeds[balloon] = MAX_SPEED - speed;
@@ -65,7 +68,7 @@ function init() {
 		document.getElementById("time").innerHTML = 
 			document.getElementById("time").innerHTML - 1;
 		
-		if(document.getElementById("time").innerHTML == 0) {
+		if(document.getElementById("time").innerHTML == 0 || gameover) {
 			clearInterval(interval);
 			alert("Game Over!");
 		}
@@ -76,11 +79,19 @@ function init() {
 function pop(id) {
 	var element = document.getElementById(id);
 	var index = id.replace("b","").trim();
+	if(element.style.backgroundImage.indexOf(DEATH_BALLOON) > -1) {
+		gameover = true;
+	}
 	playAudio(POP_AUDIO, true);
 	element.style.backgroundImage = "url(" + POP_IMAGE + ")";
 	var timeout = setTimeout(function() {
 		element.style.visibility = "hidden";
-		element.style.backgroundImage = "url(res/" + id + ".png)";
+		var deathballoon = Math.floor(Math.random() * 2);
+		if(deathballoon == 1) {
+			element.style.backgroundImage = "url(" + DEATH_BALLOON + ")";
+		} else {
+			element.style.backgroundImage = "url(res/" + id + ".png)";
+		}
 		element.style.bottom = "-260px";
 		element.style.visibility = "visible";
 	}, 300);
