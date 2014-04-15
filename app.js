@@ -1,11 +1,13 @@
 var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
+var MAX_SPEED = 20;
 var scores = {
 	"b0" : 500, "b1" : 300, "b2" : 600,
 	"b3" : 100, "b4" : 1000, "b5" : -600
 };
 var balloonWorkers = new Array();
 var workerStates = new Array();
+var balloonSpeeds = new Array();
 
 function init() {
 	
@@ -23,6 +25,7 @@ function init() {
 		document.getElementById("b" + i).style.position = "absolute";
 		document.getElementById("b" + i).style.bottom = "-260px";
 		workerStates.push(0);
+		balloonSpeeds.push(0);
 		balloonWorkers.push(null);
 	}
 	
@@ -30,13 +33,19 @@ function init() {
 	
 	var interval = setInterval(function() {
 		if(workerStates[balloon] == 0) {
-			balloonWorkers[balloon] = new Worker("b" + balloon + ".js");
+			balloonWorkers[balloon] = new Worker("balloon.js");
+			var speed = Math.floor(Math.random() * 19) + 1;
+			var limit = Math.floor(Math.random() * window.innerWidth) + 1;
+			var startX = Math.floor(Math.random() * (window.innerWidth / 2)) + 1;
+			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed});
 			workerStates[balloon] = 1;
+			balloonSpeeds[balloon] = MAX_SPEED - speed;
 			balloonWorkers[balloon].onmessage = function(event) {
 				if(event.data.y > window.innerHeight || 
 					document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) > -1) {
 					this.terminate();
 					workerStates[event.data.b] = 0;
+					balloonSpeeds[event.data.b] = 0;
 				} else {
 					document.getElementById("b" + event.data.b).style.bottom = event.data.y + "px";
 					document.getElementById("b" + event.data.b).style.left = event.data.x + "px";
@@ -62,6 +71,7 @@ function init() {
 
 function pop(id) {
 	var element = document.getElementById(id);
+	var index = id.replace("b","").trim();
 	playAudio(POP_AUDIO, true);
 	element.style.backgroundImage = "url(" + POP_IMAGE + ")";
 	var timeout = setTimeout(function() {
@@ -71,7 +81,7 @@ function pop(id) {
 		element.style.visibility = "visible";
 	}, 300);
 	document.getElementById("score").innerHTML =
-		(document.getElementById("score").innerHTML * 1 + scores[id]);
+		(document.getElementById("score").innerHTML * 1 + scores[id] * balloonSpeeds[index]);
 }
 
 function playAudio(audioSource, audio) {
