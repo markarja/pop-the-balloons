@@ -1,6 +1,6 @@
 var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
-var MAX_SPEED = 20;
+var MAX_SPEED = 10;
 var scores = {
 	"b0" : 500, "b1" : 300, "b2" : 600,
 	"b3" : 100, "b4" : 1000, "b5" : -600
@@ -38,8 +38,8 @@ function init() {
 	var interval = setInterval(function() {
 		if(workerStates[balloon] == 0) {
 			balloonWorkers[balloon] = new Worker("balloon.js");
-			var speed = Math.floor(Math.random() * 19) + 1;
-			var limit = Math.floor(Math.random() * window.innerWidth) + 1;
+			var speed = Math.floor(Math.random() * MAX_SPEED - 1) + 1;
+			var limit = Math.floor(Math.random() * window.innerWidth - 50) + 1;
 			var startX = Math.floor(Math.random() * (window.innerWidth / 2)) + 1;
 			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed});
 			workerStates[balloon] = 1;
