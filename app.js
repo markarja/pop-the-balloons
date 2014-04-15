@@ -78,10 +78,16 @@ function playAudio(audioSource, audio) {
 	if(audio) {
 		document.getElementById("audioplayer").src = audioSource;
 		var audio = document.getElementById("audioplayer");
-		if(typeof device != "undefined" && device.platform == "Android") {
-			audio = new Media("/android_asset/www/" + audioSource, 
-					function() { audio.release(); }
-					, onAudioError);
+		if(typeof device != "undefined") {
+			if(device.platform == "Android") {
+				audio = new Media("/android_asset/www/" + audioSource, 
+						function() { audio.release(); }
+						, onAudioError);
+			} else {
+				audio = new Media(audioSource, 
+						function() { audio.release(); }
+						, onAudioError);
+			}
 			audio.play();	
 		} else {
 			audio.play();
