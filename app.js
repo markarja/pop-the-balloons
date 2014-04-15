@@ -9,6 +9,9 @@ var workerStates = new Array();
 
 function init() {
 	
+	window.addEventListener("touchstart", function(event) { event.preventDefault(); }, false);
+	window.addEventListener("scroll",function() { window.scrollTo(0,0); }, false);
+	
 	var backgroundWorker = new Worker("background.js");
 	backgroundWorker.onmessage = function(event) {
 		document.getElementById("background")
