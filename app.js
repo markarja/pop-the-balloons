@@ -1,45 +1,65 @@
 var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
 var DEATH_BALLOON = "res/b6.png";
-var MAX_SPEED = 10;
+var MORE_TIME_BALLOON = "res/b7.png";
+var MAX_SPEED = 5;
 var scores = {
-	"b0" : 500, "b1" : 300, "b2" : 600,
-	"b3" : 100, "b4" : 1000, "b5" : -600
+	"b0" : 1, "b1" : 2, "b2" : 3,
+	"b3" : 4, "b4" : 5, "b5" : -1
 };
 var balloonWorkers = new Array();
 var workerStates = new Array();
 var balloonSpeeds = new Array();
-var gameover = false;
 
-function init() {
+function init(restart) {
 	
-	window.addEventListener("touchstart", function(event) {
-		if(event.target.tagName == "HTML" || event.target.tagName == "BODY") {
-			event.preventDefault();
-        }
-	} ,false);
-	window.addEventListener("scroll",function() { window.scrollTo(0,0); }, false);
+	if(!restart) {
 	
-	var backgroundWorker = new Worker("background.js");
-	backgroundWorker.onmessage = function(event) {
-		document.getElementById("background")
-			.style.backgroundPosition = event.data + "px";
-	};
+		window.addEventListener("touchstart", function(event) {
+			if(event.target.tagName == "HTML" || event.target.tagName == "BODY") {
+				event.preventDefault();
+	        }
+		} ,false);
+		window.addEventListener("scroll",function() { window.scrollTo(0,0); }, false);
+		
+		var backgroundWorker = new Worker("background.js");
+		backgroundWorker.onmessage = function(event) {
+			document.getElementById("background")
+				.style.backgroundPosition = event.data + "px";
+		};
+		
+		for(var i = 0;i < 6;i++) {
+			workerStates.push(0);
+			balloonSpeeds.push(0);
+			balloonWorkers.push(null);
+		}
+		
+	} 
+	
+	document.getElementById("time").innerHTML = 60;
+	document.getElementById("score").innerHTML = 0;
 	
 	for(var i = 0;i < 6;i++) {
 		document.getElementById("b" + i).style.backgroundImage = "url(res/b" + i + ".png)";
 		document.getElementById("b" + i).style.position = "absolute";
 		document.getElementById("b" + i).style.bottom = "-260px";
-		workerStates.push(0);
-		balloonSpeeds.push(0);
-		balloonWorkers.push(null);
 	}
+	
+	document.getElementById("gameover").style.visibility = "hidden";
 	
 	var balloon = 0;
 	
 	var interval = setInterval(function() {
 		if(workerStates[balloon] == 0) {
 			balloonWorkers[balloon] = new Worker("balloon.js");
+			var type = Math.floor(Math.random() * 5);
+			if(type == 1) {
+				document.getElementById("b" + balloon).style.backgroundImage = "url(" + DEATH_BALLOON + ")";
+			} else if(type == 2) {
+				document.getElementById("b" + balloon).style.backgroundImage = "url(" + MORE_TIME_BALLOON + ")";
+			} else {
+				document.getElementById("b" + balloon).style.backgroundImage = "url(res/b" + balloon + ".png)";
+			}
 			var speed = Math.floor(Math.random() * MAX_SPEED - 1) + 1;
 			var limit = Math.floor(Math.random() * window.innerWidth) + 1;
 			var startX = Math.floor(Math.random() * (window.innerWidth / 2)) + 1;
@@ -53,6 +73,13 @@ function init() {
 					this.terminate();
 					workerStates[event.data.b] = 0;
 					balloonSpeeds[event.data.b] = 0;
+					if(event.data.y > window.innerHeight && document.getElementById("time").innerHTML > 10 &&
+					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) == -1 &&
+					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(DEATH_BALLOON) == -1 &&
+					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(MORE_TIME_BALLOON) == -1) {
+					   document.getElementById("time").innerHTML = 
+							document.getElementById("time").innerHTML - 10;
+					}
 				} else {
 					document.getElementById("b" + event.data.b).style.bottom = event.data.y + "px";
 					document.getElementById("b" + event.data.b).style.left = event.data.x + "px";
@@ -65,38 +92,38 @@ function init() {
 		if(balloon > 5) {
 			balloon = 0;
 		}
-		document.getElementById("time").innerHTML = 
-			document.getElementById("time").innerHTML - 1;
 		
-		if(document.getElementById("time").innerHTML == 0 || gameover) {
-			clearInterval(interval);
-			alert("Game Over!");
+		if(document.getElementById("time").innerHTML == 0) {
+			document.getElementById("gameover").style.visibility = "visible";
+			window.clearInterval(interval);
+		} else {
+			document.getElementById("time").innerHTML = 
+				document.getElementById("time").innerHTML - 1;
 		}
 		
 	}, 1000);	
 }
 
 function pop(id) {
-	var element = document.getElementById(id);
-	var index = id.replace("b","").trim();
-	if(element.style.backgroundImage.indexOf(DEATH_BALLOON) > -1) {
-		gameover = true;
-	}
-	playAudio(POP_AUDIO, true);
-	element.style.backgroundImage = "url(" + POP_IMAGE + ")";
-	var timeout = setTimeout(function() {
-		element.style.visibility = "hidden";
-		var deathballoon = Math.floor(Math.random() * 5);
-		if(deathballoon == 1) {
-			element.style.backgroundImage = "url(" + DEATH_BALLOON + ")";
-		} else {
-			element.style.backgroundImage = "url(res/" + id + ".png)";
+	if(document.getElementById("time").innerHTML > 0) {
+		var element = document.getElementById(id);
+		var index = id.replace("b","").trim();
+		if(element.style.backgroundImage.indexOf(DEATH_BALLOON) > -1) {
+			document.getElementById("time").innerHTML = 0;
+		} else if(element.style.backgroundImage.indexOf(MORE_TIME_BALLOON) > -1) {
+			document.getElementById("time").innerHTML = 
+				(document.getElementById("time").innerHTML * 1) + 10;
 		}
-		element.style.bottom = "-260px";
-		element.style.visibility = "visible";
-	}, 300);
-	document.getElementById("score").innerHTML =
-		(document.getElementById("score").innerHTML * 1 + scores[id] * balloonSpeeds[index]);
+		playAudio(POP_AUDIO, true);
+		element.style.backgroundImage = "url(" + POP_IMAGE + ")";
+		var timeout = setTimeout(function() {
+			element.style.visibility = "hidden";
+			element.style.bottom = "-260px";
+			element.style.visibility = "visible";
+		}, 300);
+		document.getElementById("score").innerHTML =
+			(document.getElementById("score").innerHTML * 1 + scores[id] * balloonSpeeds[index]);
+	}
 }
 
 function playAudio(audioSource, audio) {
