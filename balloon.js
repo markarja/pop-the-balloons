@@ -6,11 +6,11 @@ onmessage = function(event) {
 		if(moveLeft) {
 			x--;
 		} else {
-			x++;
+			x = x + (event.data.maxspeed - event.data.speed);
 		}
-		if(x == event.data.limit) {
+		if(x >= event.data.limit) {
 			moveLeft = true;
-		} else if(x == event.data.x) {
+		} else if(x <= event.data.x) {
 			moveLeft = false;
 		}
 		y++;
