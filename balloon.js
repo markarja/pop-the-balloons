@@ -13,7 +13,7 @@ onmessage = function(event) {
 		} else if(x <= event.data.x) {
 			moveLeft = false;
 		}
-		y++;
+		y = y + (event.data.maxspeed - event.data.speed);
 		postMessage({"b" : event.data.b, "x" : x, "y" : y});
 	}, event.data.speed);
 }
