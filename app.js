@@ -64,7 +64,7 @@ function init(restart) {
 			var limit = Math.floor(Math.random() * window.innerWidth) + 1;
 			var startX = Math.floor(Math.random() * (window.innerWidth / 2)) + 1;
 			if(limit < startX) limit = startX + 100;
-			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed, "maxspeed" : maxspeed});
+			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed, "maxspeed" : MAX_SPEED});
 			workerStates[balloon] = 1;
 			balloonSpeeds[balloon] = MAX_SPEED - speed;
 			balloonWorkers[balloon].onmessage = function(event) {
