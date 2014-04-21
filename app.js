@@ -52,7 +52,7 @@ function init(restart) {
 	var interval = setInterval(function() {
 		if(workerStates[balloon] == 0) {
 			balloonWorkers[balloon] = new Worker("balloon.js");
-			var type = Math.floor(Math.random() * 5);
+			var type = Math.floor(Math.random() * 10);
 			if(type == 1) {
 				document.getElementById("b" + balloon).style.backgroundImage = "url(" + DEATH_BALLOON + ")";
 			} else if(type == 2) {
@@ -64,7 +64,7 @@ function init(restart) {
 			var limit = Math.floor(Math.random() * window.innerWidth) + 1;
 			var startX = Math.floor(Math.random() * (window.innerWidth / 2)) + 1;
 			if(limit < startX) limit = startX + 100;
-			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed});
+			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed, "maxspeed" : maxspeed});
 			workerStates[balloon] = 1;
 			balloonSpeeds[balloon] = MAX_SPEED - speed;
 			balloonWorkers[balloon].onmessage = function(event) {
