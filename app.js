@@ -52,7 +52,7 @@ function init(restart) {
 	var interval = setInterval(function() {
 		if(workerStates[balloon] == 0) {
 			balloonWorkers[balloon] = new Worker("balloon.js");
-			var type = Math.floor(Math.random() * 10);
+			var type = Math.floor(Math.random() * 20);
 			if(type == 1) {
 				document.getElementById("b" + balloon).style.backgroundImage = "url(" + DEATH_BALLOON + ")";
 			} else if(type == 2) {
