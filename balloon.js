@@ -4,7 +4,7 @@ onmessage = function(event) {
 	var y = -200;
 	var interval = setInterval(function () {
 		if(moveLeft) {
-			x--;
+			x = x - (event.data.maxspeed - event.data.speed);
 		} else {
 			x = x + (event.data.maxspeed - event.data.speed);
 		}
