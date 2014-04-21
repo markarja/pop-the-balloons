@@ -123,8 +123,8 @@ function pop(id) {
 			element.style.bottom = "-260px";
 			element.style.visibility = "visible";
 		}, 300);
-		element.setAttribute("onclick", "pop(" + id + ")");
-		element.setAttribute("ontouchstart", "pop(" + id + ")");
+		element.setAttribute("onclick", "pop(" + id + ");");
+		element.setAttribute("ontouchstart", "pop(" + id + ");");
 		document.getElementById("score").innerHTML =
 			(document.getElementById("score").innerHTML * 1 + scores[id] * balloonSpeeds[index]);
 	}
