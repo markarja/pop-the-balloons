@@ -107,6 +107,8 @@ function init(restart) {
 function pop(id) {
 	if(document.getElementById("time").innerHTML > 0) {
 		var element = document.getElementById(id);
+		element.onclick = function() {};
+		element.ontouchstart = function() {};
 		var index = id.replace("b","").trim();
 		if(element.style.backgroundImage.indexOf(DEATH_BALLOON) > -1) {
 			document.getElementById("time").innerHTML = 0;
@@ -121,6 +123,8 @@ function pop(id) {
 			element.style.bottom = "-260px";
 			element.style.visibility = "visible";
 		}, 300);
+		element.setAttribute("onclick", "pop(" + id + ")");
+		element.setAttribute("ontouchstart", "pop(" + id + ")");
 		document.getElementById("score").innerHTML =
 			(document.getElementById("score").innerHTML * 1 + scores[id] * balloonSpeeds[index]);
 	}
