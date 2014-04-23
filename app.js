@@ -3,10 +3,13 @@ var POP_AUDIO = "res/pop.mp3";
 var DEATH_BALLOON = "res/b6.png";
 var MORE_TIME_BALLOON = "res/b7.png";
 var MAX_SPEED = 5;
+var MAX_BALLOONS = 6;
+
 var scores = {
 	"b0" : 1, "b1" : 2, "b2" : 3,
 	"b3" : 4, "b4" : 5, "b5" : -1
 };
+
 var balloonWorkers = new Array();
 var workerStates = new Array();
 var balloonSpeeds = new Array();
@@ -28,7 +31,7 @@ function init(restart) {
 				.style.backgroundPosition = event.data + "px";
 		};
 		
-		for(var i = 0;i < 6;i++) {
+		for(var i = 0;i < MAX_BALLOONS;i++) {
 			workerStates.push(0);
 			balloonSpeeds.push(0);
 			balloonWorkers.push(null);
@@ -46,11 +49,12 @@ function init(restart) {
 	}
 	
 	document.getElementById("gameover").style.visibility = "hidden";
+	document.getElementById("restart").style.visibility = "hidden";
 	
 	var balloon = 0;
 	
 	var interval = setInterval(function() {
-		if(workerStates[balloon] == 0) {
+		if(workerStates[balloon] == 0 && document.getElementById("time").innerHTML > 0) {
 			balloonWorkers[balloon] = new Worker("balloon.js");
 			var type = Math.floor(Math.random() * 20);
 			if(type == 1) {
@@ -68,7 +72,7 @@ function init(restart) {
 			workerStates[balloon] = 1;
 			balloonSpeeds[balloon] = MAX_SPEED - speed;
 			balloonWorkers[balloon].onmessage = function(event) {
-				if(event.data.y > window.innerHeight || 
+				if(event.data.y > window.innerHeight + 50 || 
 					document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) > -1) {
 					this.terminate();
 					workerStates[event.data.b] = 0;
@@ -84,21 +88,31 @@ function init(restart) {
 					document.getElementById("b" + event.data.b).style.bottom = event.data.y + "px";
 					document.getElementById("b" + event.data.b).style.left = event.data.x + "px";
 				}
-			};
-			
-			
+			};	
 		}
 		balloon++;
-		if(balloon > 5) {
+		if(balloon > MAX_BALLOONS - 1) {
 			balloon = 0;
 		}
 		
 		if(document.getElementById("time").innerHTML == 0) {
 			document.getElementById("gameover").style.visibility = "visible";
-			window.clearInterval(interval);
+			var i = 0;
+			for(i = 0;i < MAX_BALLOONS;i++) {
+				var y = 1 * (document.getElementById("b" + i).style.bottom.replace("px", ""));
+				console.log(y + " < " + window.innerHeight);
+				if(y > 0 && y < window.innerHeight) {
+					break;
+				}
+			}
+			
+			if(i == MAX_BALLOONS) {
+				document.getElementById("restart").style.visibility = "visible";
+				window.clearInterval(interval);
+			}
 		} else {
 			document.getElementById("time").innerHTML = 
-				document.getElementById("time").innerHTML - 1;
+			document.getElementById("time").innerHTML - 1;
 		}
 		
 	}, 1000);	
@@ -136,14 +150,13 @@ function playAudio(audioSource, audio) {
 		var audio = document.getElementById("audioplayer");
 		if(typeof device != "undefined") {
 			if(device.platform == "Android") {
-				audio = new Media("/android_asset/www/" + audioSource, 
-						function() { audio.release(); }
-						, onAudioError);
-			} else {
-				audio = new Media(audioSource, 
-						function() { audio.release(); }
-						, onAudioError);
-			}
+				audioSource = "/android_asset/www/" + audioSource;
+			} else if(device.platform == "WinCE") {
+				audioSource = "/app/www/" + audioSource;
+			} 
+			audio = new Media(audioSource, 
+				function() { audio.release(); }
+				, onAudioError);
 			audio.play();	
 		} else {
 			audio.play();

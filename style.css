@@ -17,8 +17,20 @@ body {
 	font-size: 50px;
 	padding-left: 10px;
 	position: fixed;
-	top: -10px;
+	top: -5px;
 	left: 10px;
+}
+
+.score-label {
+	font-family: 'Gloria Hallelujah', cursive;
+	z-index: 1; 
+	font-weight: lighter;
+	color: rgb(0,0,0);
+	font-size: 20px;
+	padding-left: 10px;
+	position: fixed;
+	top: -10px;
+	left: 10px;	
 }
 
 .time {
@@ -28,9 +40,21 @@ body {
 	color: rgb(0,0,0);
 	font-size: 50px;
 	position: fixed;
+	top: -5px;
+	right: 25px;
+}
+
+.time-label {
+	z-index: 1; 
+	font-family: 'Gloria Hallelujah', cursive;
+	font-weight: lighter;
+	color: rgb(0,0,0);
+	font-size: 20px;
+	position: fixed;
 	top: -10px;
 	right: 25px;
 }
+
 
 .balloon {
 	background-repeat: no-repeat; 
@@ -59,7 +83,8 @@ body {
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
-	border: 1px solid;
+	border: none;
 	padding: 10px;
 	z-index: 3; 
+	visibility: hidden;
 }
