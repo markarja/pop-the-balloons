@@ -71,7 +71,7 @@ function init(restart) {
 			if(limit < startX) limit = startX + 100;
 			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed, "maxspeed" : MAX_SPEED});
 			workerStates[balloon] = 1;
-			balloonSpeeds[balloon] = MAX_SPEED - speed;
+			balloonSpeeds[balloon] = (MAX_SPEED - speed + 10);
 			balloonWorkers[balloon].onmessage = function(event) {
 				if(event.data.y > (window.innerHeight + 110) || 
 					document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) > -1) {
