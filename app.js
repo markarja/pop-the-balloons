@@ -46,6 +46,7 @@ function init(restart) {
 		document.getElementById("b" + i).style.backgroundImage = "url(res/b" + i + ".png)";
 		document.getElementById("b" + i).style.position = "absolute";
 		document.getElementById("b" + i).style.bottom = "-260px";
+		document.getElementById("t" + i).style.bottom = "-360px";
 	}
 	
 	document.getElementById("gameover").style.visibility = "hidden";
@@ -72,12 +73,12 @@ function init(restart) {
 			workerStates[balloon] = 1;
 			balloonSpeeds[balloon] = MAX_SPEED - speed;
 			balloonWorkers[balloon].onmessage = function(event) {
-				if(event.data.y > window.innerHeight + 50 || 
+				if(event.data.y > (window.innerHeight + 110) || 
 					document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) > -1) {
 					this.terminate();
 					workerStates[event.data.b] = 0;
 					balloonSpeeds[event.data.b] = 0;
-					if(event.data.y > window.innerHeight && document.getElementById("time").innerHTML > 10 &&
+					if(event.data.y > (window.innerHeight + 110) && document.getElementById("time").innerHTML > 10 &&
 					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) == -1 &&
 					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(DEATH_BALLOON) == -1 &&
 					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(MORE_TIME_BALLOON) == -1) {
@@ -87,6 +88,10 @@ function init(restart) {
 				} else {
 					document.getElementById("b" + event.data.b).style.bottom = event.data.y + "px";
 					document.getElementById("b" + event.data.b).style.left = event.data.x + "px";
+					document.getElementById("t" + event.data.b).style.bottom = (event.data.y - 98) + "px";
+					document.getElementById("t" + event.data.b).style.left = (event.data.x + 23) + "px";
+					var tail = ((event.data.y % 2) == 0) ? "1" : "0";
+					document.getElementById("t" + event.data.b).style.backgroundImage = "url(res/tail" + tail + ".png)";
 				}
 			};	
 		}
@@ -130,12 +135,18 @@ function pop(id) {
 			document.getElementById("time").innerHTML = 
 				(document.getElementById("time").innerHTML * 1) + 10;
 		}
+		var tail = document.getElementById("t" + index);
 		playAudio(POP_AUDIO, true);
+		element.style.width = "100px";
 		element.style.backgroundImage = "url(" + POP_IMAGE + ")";
+		tail.style.visibility = "hidden";
 		var timeout = setTimeout(function() {
 			element.style.visibility = "hidden";
 			element.style.bottom = "-260px";
 			element.style.visibility = "visible";
+			tail.style.visibility = "visible";
+			tail.style.bottom = "-360px";
+			element.style.width = "50px";
 		}, 300);
 		element.onclick = function() { pop(this.id); };
 		element.ontouchstart = function() { pop(this.id); };
