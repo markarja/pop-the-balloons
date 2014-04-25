@@ -2,7 +2,7 @@ var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
 var DEATH_BALLOON = "res/b6.png";
 var MORE_TIME_BALLOON = "res/b7.png";
-var MAX_SPEED = 20;
+var MAX_SPEED = 5;
 var MAX_BALLOONS = 6;
 
 var scores = {
@@ -71,7 +71,7 @@ function init(restart) {
 			if(limit < startX) limit = startX + 100;
 			balloonWorkers[balloon].postMessage({"b" : balloon, "x" : startX, "limit" : limit, "speed" : speed, "maxspeed" : MAX_SPEED});
 			workerStates[balloon] = 1;
-			balloonSpeeds[balloon] = MAX_SPEED - speed;
+			balloonSpeeds[balloon] = (MAX_SPEED - speed) + 1;
 			balloonWorkers[balloon].onmessage = function(event) {
 				if(event.data.y > (window.innerHeight + 110) || 
 					document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(POP_IMAGE) > -1) {
