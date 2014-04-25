@@ -84,6 +84,7 @@ function init(restart) {
 					   document.getElementById("b" + event.data.b).style.backgroundImage.indexOf(MORE_TIME_BALLOON) == -1) {
 					   document.getElementById("time").innerHTML = 
 							document.getElementById("time").innerHTML - 10;
+					   document.getElementById("time").style.color = "rgb(255,0,0)";
 					}
 				} else {
 					document.getElementById("b" + event.data.b).style.bottom = event.data.y + "px";
@@ -102,6 +103,17 @@ function init(restart) {
 		
 		if(document.getElementById("time").innerHTML == 0) {
 			document.getElementById("gameover").style.visibility = "visible";
+			var highscore = window.localStorage.getItem("highscore");
+			if(highscore != undefined && highscore != null) {
+				if((document.getElementById("score").innerHTML * 1) > highscore) {
+					window.localStorage.setItem("highscore", document.getElementById("score").innerHTML);
+				}
+			} else {
+				window.localStorage.setItem("highscore", document.getElementById("score").innerHTML);
+			}
+			highscore = window.localStorage.getItem("highscore");
+			document.getElementById("highscore").innerHTML = highscore;
+			
 			var i = 0;
 			for(i = 0;i < MAX_BALLOONS;i++) {
 				var y = 1 * (document.getElementById("b" + i).style.bottom.replace("px", ""));
@@ -117,6 +129,7 @@ function init(restart) {
 		} else {
 			document.getElementById("time").innerHTML = 
 			document.getElementById("time").innerHTML - 1;
+			document.getElementById("time").style.color = "rgb(0,0,0)";
 		}
 		
 	}, 1000);	
