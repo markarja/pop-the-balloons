@@ -105,7 +105,6 @@ function init(restart) {
 			var i = 0;
 			for(i = 0;i < MAX_BALLOONS;i++) {
 				var y = 1 * (document.getElementById("b" + i).style.bottom.replace("px", ""));
-				console.log(y + " < " + window.innerHeight);
 				if(y > 0 && y < window.innerHeight) {
 					break;
 				}
