@@ -2,7 +2,7 @@ var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
 var DEATH_BALLOON = "res/b6.png";
 var MORE_TIME_BALLOON = "res/b7.png";
-var MAX_SPEED = 10;
+var MAX_SPEED = 20;
 var MAX_BALLOONS = 6;
 
 var scores = {
