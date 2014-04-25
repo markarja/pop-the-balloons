@@ -10,49 +10,49 @@ body {
 }
 
 .score {
-	font-family: 'Gloria Hallelujah', cursive;
+	font-family: 'PT Sans Narrow', 'sans-serif';
 	z-index: 1; 
 	font-weight: lighter;
 	color: rgb(0,0,0);
 	font-size: 50px;
 	padding-left: 10px;
 	position: fixed;
-	top: -5px;
-	left: 10px;
+	top: 15px;
+	left: 3px;
 }
 
 .score-label {
-	font-family: 'Gloria Hallelujah', cursive;
+	font-family: 'PT Sans Narrow', 'sans-serif';
 	z-index: 1; 
 	font-weight: lighter;
 	color: rgb(0,0,0);
 	font-size: 20px;
 	padding-left: 10px;
 	position: fixed;
-	top: -10px;
-	left: 10px;	
+	top: 0px;
+	left: 3px;	
 }
 
 .time {
 	z-index: 1; 
-	font-family: 'Gloria Hallelujah', cursive;
+	font-family: 'PT Sans Narrow', 'sans-serif';
 	font-weight: lighter;
 	color: rgb(0,0,0);
 	font-size: 50px;
 	position: fixed;
-	top: -5px;
-	right: 25px;
+	top: 15px;
+	right: 10px;
 }
 
 .time-label {
 	z-index: 1; 
-	font-family: 'Gloria Hallelujah', cursive;
+	font-family: 'PT Sans Narrow', 'sans-serif';;
 	font-weight: lighter;
 	color: rgb(0,0,0);
 	font-size: 20px;
 	position: fixed;
-	top: -10px;
-	right: 25px;
+	top: 0px;
+	right: 10px;
 }
 
 
@@ -74,7 +74,7 @@ body {
 	visibility: hidden;
 	background-color: rgb(255,255,255);
 	z-index: 2; 
-	font-family: 'Gloria Hallelujah', cursive;
+	font-family: 'PT Sans Narrow', 'sans-serif';
 	font-size: 20px;
 	position: absolute;
 	top: 30%;
@@ -84,7 +84,7 @@ body {
 }
 
 .restart {
-	font-family: 'Gloria Hallelujah', cursive;
+	font-family: 'PT Sans Narrow', 'sans-serif';
 	font-size: 30px;
 	color: rgb(255,255,255);
 	background-color: rgb(0,200,0);
@@ -95,4 +95,5 @@ body {
 	padding: 10px;
 	z-index: 3; 
 	visibility: hidden;
+	border: 1px solid rgb(0,0,0);
 }
