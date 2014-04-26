@@ -5,7 +5,7 @@ var MORE_TIME_BALLOON = "res/b7.png";
 var MAX_SPEED = 5;
 var MAX_BALLOONS = 6;
 
-var scores = {
+var points = {
 	"b0" : 1, "b1" : 2, "b2" : 3,
 	"b3" : 4, "b4" : 5, "b5" : -1
 };
@@ -163,7 +163,7 @@ function pop(id) {
 		element.onclick = function() { pop(this.id); };
 		element.ontouchstart = function() { pop(this.id); };
 		document.getElementById("score").innerHTML =
-			(document.getElementById("score").innerHTML * 1 + scores[id] * balloonSpeeds[index]);
+			(document.getElementById("score").innerHTML * 1 + points[id] * balloonSpeeds[index]);
 	}
 }
 
