@@ -31,7 +31,8 @@
 		<div class="gameover" id="gameover">
 			<p>Game over!</p>
 			<p>Your highest score: <span id="highscore">0</span></p>
-			<input type="text" onclick="window.location = this.value" />
+			<input type="text" id="url" />
+			<button onclick="window.location = document.getElementById('url').value">go</button>
 			<p><button class="restart" id="restart" onclick="init(true);">Play again</button></p>
 		</div>
 		<audio id="audioplayer">
