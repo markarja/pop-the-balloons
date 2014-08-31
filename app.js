@@ -62,7 +62,6 @@ function init(restart) {
 	document.getElementById("time").style.visibility = "visible";
 	document.getElementById("highscores").style.visibility = "hidden";
 	document.getElementById("highscores-restart").style.visibility = "hidden";
-	document.getElementById("enterplayername").className = "invisible";
 	document.getElementById("playernameinput").className = "invisible";
 	document.getElementById("submitscorebutton").className = "invisible";
 	document.getElementById("or").className = "invisible";
@@ -157,12 +156,10 @@ function init(restart) {
 			}
 			if(i == MAX_BALLOONS) {
 				if(document.getElementById("score").innerHTML * 1 > 0) {
-					document.getElementById("enterplayername").className = "visible";
 					document.getElementById("playernameinput").className = "visible";
 					document.getElementById("submitscorebutton").className = "visible";
 					document.getElementById("or").className = "visible";
 				} else {
-					document.getElementById("enterplayername").className = "invisible";
 					document.getElementById("playernameinput").className = "invisible";
 					document.getElementById("submitscorebutton").className = "invisible";
 					document.getElementById("or").className = "invisible";
@@ -209,7 +206,6 @@ function submitScore() {
 	document.getElementById("time").style.visibility = "hidden";
 	document.getElementById("highscores").style.visibility = "visible";
 	document.getElementById("highscores-restart").style.visibility = "visible";
-	document.getElementById("enterplayername").className = "invisible";
 	document.getElementById("playernameinput").className = "invisible";
 	document.getElementById("submitscorebutton").className = "invisible";
 	document.getElementById("or").className = "invisible";
