@@ -43,7 +43,7 @@ function init(restart) {
 		
 	} 
 	
-	document.getElementById("time").innerHTML = 4;
+	document.getElementById("time").innerHTML = 60;
 	document.getElementById("score").innerHTML = 0;
 	
 	for(var i = 0;i < 6;i++) {
