@@ -188,7 +188,7 @@ function submitScore() {
 				rows += "<tr><td class=\"left\">" + (i + 1) + ". " + highscores["data"][i].name + "</td><td class=\"right\">" + highscores["data"][i].score + "</td></tr>";
 			}
 
-			document.getElementById("title").innerHTML = "Top " + highscores["data"].length + " Balloon Poppers";
+			document.getElementById("title").innerHTML = "Top " + highscores["data"].length + " Balloon Poppers Worldwide";
 			
 			$(rows).appendTo("#highscores-table tbody");
 		},
