@@ -2,7 +2,7 @@ var POP_IMAGE = "res/pop.png";
 var POP_AUDIO = "res/pop.mp3";
 var DEATH_BALLOON = "res/b6.png";
 var MORE_TIME_BALLOON = "res/b7.png";
-var MAX_SPEED = 5;
+var MAX_SPEED = 3;
 var MAX_BALLOONS = 6;
 
 var points = {
@@ -14,7 +14,11 @@ var balloonWorkers = new Array();
 var workerStates = new Array();
 var balloonSpeeds = new Array();
 
+var gameover = false;
+
 function init(restart) {
+	
+	gameover = false;
 	
 	if(!restart) {
 	
@@ -39,7 +43,7 @@ function init(restart) {
 		
 	} 
 	
-	document.getElementById("time").innerHTML = 60;
+	document.getElementById("time").innerHTML = 4;
 	document.getElementById("score").innerHTML = 0;
 	
 	for(var i = 0;i < 6;i++) {
@@ -50,7 +54,18 @@ function init(restart) {
 	}
 	
 	document.getElementById("gameover").style.visibility = "hidden";
+	document.getElementById("submitscore").style.visibility = "hidden";
 	document.getElementById("restart").style.visibility = "hidden";
+	document.getElementById("score-label").style.visibility = "visible";
+	document.getElementById("score").style.visibility = "visible";
+	document.getElementById("time-label").style.visibility = "visible";
+	document.getElementById("time").style.visibility = "visible";
+	document.getElementById("highscores").style.visibility = "hidden";
+	document.getElementById("highscores-restart").style.visibility = "hidden";
+	document.getElementById("enterplayername").className = "invisible";
+	document.getElementById("playernameinput").className = "invisible";
+	document.getElementById("submitscorebutton").className = "invisible";
+	document.getElementById("or").className = "invisible";
 	
 	var balloon = 0;
 	
@@ -101,9 +116,11 @@ function init(restart) {
 			balloon = 0;
 		}
 		
-		if(document.getElementById("time").innerHTML == 0) {
+		if(document.getElementById("time").innerHTML == 0 && !gameover) {
+			gameover = true;
 			document.getElementById("gameover").style.visibility = "visible";
 			var highscore = window.localStorage.getItem("highscore");
+			var playername = window.localStorage.getItem("playername");
 			if(highscore != undefined && highscore != null) {
 				if((document.getElementById("score").innerHTML * 1) > highscore) {
 					window.localStorage.setItem("highscore", document.getElementById("score").innerHTML);
@@ -111,8 +128,25 @@ function init(restart) {
 			} else {
 				window.localStorage.setItem("highscore", document.getElementById("score").innerHTML);
 			}
+			
+			if(playername != undefined && playername != null) {
+				document.getElementById("playername").value = playername;
+			}
+			
 			highscore = window.localStorage.getItem("highscore");
-			document.getElementById("highscore").innerHTML = highscore;
+			document.getElementById("highscore").innerHTML = document.getElementById("score").innerHTML;
+			
+			if(document.getElementById("score").innerHTML * 1 > 0) {
+				document.getElementById("enterplayername").className = "visible";
+				document.getElementById("playernameinput").className = "visible";
+				document.getElementById("submitscorebutton").className = "visible";
+				document.getElementById("or").className = "visible";
+			} else {
+				document.getElementById("enterplayername").className = "invisible";
+				document.getElementById("playernameinput").className = "invisible";
+				document.getElementById("submitscorebutton").className = "invisible";
+				document.getElementById("or").className = "invisible";
+			}
 			
 			var i = 0;
 			for(i = 0;i < MAX_BALLOONS;i++) {
@@ -122,8 +156,14 @@ function init(restart) {
 				}
 			}
 			
+			document.getElementById("score-label").style.visibility = "hidden";
+			document.getElementById("score").style.visibility = "hidden";
+			document.getElementById("time-label").style.visibility = "hidden";
+			document.getElementById("time").style.visibility = "hidden";
+			document.getElementById("submitscore").style.visibility = "visible";
+			document.getElementById("restart").style.visibility = "visible";
+			
 			if(i == MAX_BALLOONS) {
-				document.getElementById("restart").style.visibility = "visible";
 				window.clearInterval(interval);
 			}
 		} else {
@@ -133,6 +173,43 @@ function init(restart) {
 		}
 		
 	}, 1000);	
+}
+
+function submitScore() {
+	$.ajax({
+		url : "http://www.markuskarjalainen.com/rest/ptb/",
+		data : {"apikey" : "fdfa5d3de392e6e57d8b783f37a5d3f5", "name" : document.getElementById("playername").value, "score" : document.getElementById("score").innerHTML},
+		async : false,
+		success : function(data) {
+			var highscores = $.parseJSON(data);
+			var rows = "";
+			
+			$("#highscores-table tbody").children().remove();
+			
+			for(var i = 0;i < highscores["data"].length;i++) {
+				rows += "<tr><td class=\"left\">" + highscores["data"][i].name + "</td><td class=\"right\">" + highscores["data"][i].score + "</td></tr>";
+			}
+
+			$(rows).appendTo("#highscores-table tbody");
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+			alert("Score submission failed. Please check that your phone is connected to the network.");
+	    }
+	});
+	window.localStorage.setItem("playername", document.getElementById("playername").value);
+	document.getElementById("gameover").style.visibility = "hidden";
+	document.getElementById("submitscore").style.visibility = "hidden";
+	document.getElementById("restart").style.visibility = "hidden";
+	document.getElementById("score-label").style.visibility = "hidden";
+	document.getElementById("score").style.visibility = "hidden";
+	document.getElementById("time-label").style.visibility = "hidden";
+	document.getElementById("time").style.visibility = "hidden";
+	document.getElementById("highscores").style.visibility = "visible";
+	document.getElementById("highscores-restart").style.visibility = "visible";
+	document.getElementById("enterplayername").className = "invisible";
+	document.getElementById("playernameinput").className = "invisible";
+	document.getElementById("submitscorebutton").className = "invisible";
+	document.getElementById("or").className = "invisible";
 }
 
 function pop(id) {

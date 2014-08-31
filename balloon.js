@@ -16,4 +16,4 @@ onmessage = function(event) {
 		y = y + (event.data.maxspeed - event.data.speed);
 		postMessage({"b" : event.data.b, "x" : x, "y" : y});
 	}, event.data.speed);
-}
+};

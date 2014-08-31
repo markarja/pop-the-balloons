@@ -9,6 +9,44 @@ body {
   	overflow: hidden;
 }
 
+table {
+	font-family: 'PT Sans Narrow', 'sans-serif';
+	padding: 5px;
+	font-size: 20px;
+	width: 100%;
+	border-collapse: collapse;
+	color: rgb(50,50,50);
+}
+
+.right {
+	text-align: right;	
+	padding-right: 10px;
+	border-bottom: 1px dashed rgb(200,200,200);
+}
+
+.left {
+	text-align: left;	
+	padding-left: 10px;
+	border-bottom: 1px dashed rgb(200,200,200);
+}
+
+td.title {
+	font-weight: bold;
+	font-size: 20px;
+	text-align: center;	
+	background-color: rgb(255,255,255);
+}
+
+.highscores {
+	background-color: rgb(255,255,255);
+	opacity: 0.9;
+	text-align: center;	
+	visibility: hidden;
+	z-index: 2;
+	height: 100vh;
+	width: 100%;
+}
+
 .score {
 	font-family: 'PT Sans Narrow', 'sans-serif';
 	z-index: 1; 
@@ -46,7 +84,7 @@ body {
 
 .time-label {
 	z-index: 1; 
-	font-family: 'PT Sans Narrow', 'sans-serif';;
+	font-family: 'PT Sans Narrow', 'sans-serif';
 	font-weight: lighter;
 	color: rgb(0,0,0);
 	font-size: 20px;
@@ -77,13 +115,13 @@ body {
 	font-family: 'PT Sans Narrow', 'sans-serif';
 	font-size: 20px;
 	position: absolute;
-	top: 30%;
 	width: 100%;
 	opacity: 0.9;
 	text-align: center;
+	height: 100%;
 }
 
-.restart {
+.button {
 	font-family: 'PT Sans Narrow', 'sans-serif';
 	font-size: 30px;
 	color: rgb(255,255,255);
@@ -95,5 +133,26 @@ body {
 	padding: 10px;
 	z-index: 3; 
 	visibility: hidden;
-	border: 1px solid rgb(0,0,0);
+	/*border: 1px solid rgb(0,0,0);*/
+}
+
+.textinput {
+	border-radius: 5px; 
+	font-size: 20px;
+	text-align: center;
+	width: 90%;	
+}
+
+.enterplayername {
+	visibility: hidden;	
+}
+
+.invisible {
+	visibility: hidden;
+	display: none;	
+}
+
+.visible {
+	visibility: visible;
+	display: block;
 }

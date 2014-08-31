@@ -9,6 +9,7 @@
 	 	<link rel="stylesheet" href="style.css" type="text/css">
 		<title>Pop the Balloons</title>
 		<script src="phonegap.js"></script>
+		<script src="res/jquery-2.1.1.min.js"></script>
 		<script src="app.js"></script>
 	</head>
 	<body onload="init(false);" id="background">
@@ -16,22 +17,45 @@
 		<span id="score" class="score">0</span>
 		<span id="time-label" class="time-label">Time</span>
 		<span id="time" class="time">60</span>
-		<div id="b0" class="balloon" ontouchstart="pop('b0');"></div>
+		<div id="b0" class="balloon" onclick="pop('b0');"></div>
 		<div class="tail" id="t0"></div>
-		<div id="b1" class="balloon" ontouchstart="pop('b1');"></div>
+		<div id="b1" class="balloon" onclick="pop('b1');"></div>
 		<div class="tail" id="t1"></div>
-		<div id="b2" class="balloon" ontouchstart="pop('b2');"></div>
+		<div id="b2" class="balloon" onclick="pop('b2');"></div>
 		<div class="tail" id="t2"></div>
-		<div id="b3" class="balloon" ontouchstart="pop('b3');"></div>
+		<div id="b3" class="balloon" onclick="pop('b3');"></div>
 		<div class="tail" id="t3"></div>
-		<div id="b4" class="balloon" ontouchstart="pop('b4');"></div>
+		<div id="b4" class="balloon" onclick="pop('b4');"></div>
 		<div class="tail" id="t4"></div>
-		<div id="b5" class="balloon" ontouchstart="pop('b5');"></div>
+		<div id="b5" class="balloon" onclick="pop('b5');"></div>
 		<div class="tail" id="t5"></div>
 		<div class="gameover" id="gameover">
 			<p>Game over!</p>
-			<p>Your highest score: <span id="highscore">0</span></p>
-			<p><button class="restart" id="restart" onclick="init(true);">Play again</button></p>
+			<p>Your score: <span id="highscore">0</span></p>
+			<p class="invisible" id="enterplayername">Enter your name: </p>
+			<p class="invisible" id="playernameinput"><input type="text" id="playername" value="player" class="textinput" /></p>
+			<p class="invisible" id="submitscorebutton">
+				<button class="button" id="submitscore" onclick="submitScore();">Submit score</button>
+			</p>
+			<p class="invisible" id="or">
+			or 
+			</p>
+			<p><button class="button" id="restart" onclick="init(true);">Play again</button></p>	
+		</div> 
+		<div class="highscores" id="highscores">
+			<table id="highscores-table">
+				<thead>
+					<tr>
+						<td colspan="3" class="title">Top 10 Balloon Poppers</td>
+					</tr>
+					<tr>
+						<th class="left">Player</th><th class="right">Score</th>
+					</tr>
+				</thead>
+				<tbody>
+    			</tbody>
+			</table>
+			<p><button class="button" id="highscores-restart" onclick="init(true);">Play again</button></p>
 		</div>
 		<audio id="audioplayer">
 			<source src="res/pop.mp3" type="audio/mp3" />
