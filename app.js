@@ -136,18 +136,18 @@ function init(restart) {
 			highscore = window.localStorage.getItem("highscore");
 			document.getElementById("highscore").innerHTML = document.getElementById("score").innerHTML;
 			
-			if(document.getElementById("score").innerHTML * 1 > 0) {
-				document.getElementById("enterplayername").className = "visible";
-				document.getElementById("playernameinput").className = "visible";
-				document.getElementById("submitscorebutton").className = "visible";
-				document.getElementById("or").className = "visible";
-			} else {
-				document.getElementById("enterplayername").className = "invisible";
-				document.getElementById("playernameinput").className = "invisible";
-				document.getElementById("submitscorebutton").className = "invisible";
-				document.getElementById("or").className = "invisible";
-			}
+			document.getElementById("score-label").style.visibility = "hidden";
+			document.getElementById("score").style.visibility = "hidden";
+			document.getElementById("time-label").style.visibility = "hidden";
+			document.getElementById("time").style.visibility = "hidden";
 			
+		} else {
+			document.getElementById("time").innerHTML = 
+			document.getElementById("time").innerHTML - 1;
+			document.getElementById("time").style.color = "rgb(0,0,0)";
+		}
+		
+		if(gameover) {
 			var i = 0;
 			for(i = 0;i < MAX_BALLOONS;i++) {
 				var y = 1 * (document.getElementById("b" + i).style.bottom.replace("px", ""));
@@ -155,21 +155,22 @@ function init(restart) {
 					break;
 				}
 			}
-			
-			document.getElementById("score-label").style.visibility = "hidden";
-			document.getElementById("score").style.visibility = "hidden";
-			document.getElementById("time-label").style.visibility = "hidden";
-			document.getElementById("time").style.visibility = "hidden";
-			document.getElementById("submitscore").style.visibility = "visible";
-			document.getElementById("restart").style.visibility = "visible";
-			
 			if(i == MAX_BALLOONS) {
+				if(document.getElementById("score").innerHTML * 1 > 0) {
+					document.getElementById("enterplayername").className = "visible";
+					document.getElementById("playernameinput").className = "visible";
+					document.getElementById("submitscorebutton").className = "visible";
+					document.getElementById("or").className = "visible";
+				} else {
+					document.getElementById("enterplayername").className = "invisible";
+					document.getElementById("playernameinput").className = "invisible";
+					document.getElementById("submitscorebutton").className = "invisible";
+					document.getElementById("or").className = "invisible";
+				}
+				document.getElementById("submitscore").style.visibility = "visible";
+				document.getElementById("restart").style.visibility = "visible";
 				window.clearInterval(interval);
 			}
-		} else {
-			document.getElementById("time").innerHTML = 
-			document.getElementById("time").innerHTML - 1;
-			document.getElementById("time").style.color = "rgb(0,0,0)";
 		}
 		
 	}, 1000);	
@@ -187,9 +188,11 @@ function submitScore() {
 			$("#highscores-table tbody").children().remove();
 			
 			for(var i = 0;i < highscores["data"].length;i++) {
-				rows += "<tr><td class=\"left\">" + highscores["data"][i].name + "</td><td class=\"right\">" + highscores["data"][i].score + "</td></tr>";
+				rows += "<tr><td class=\"left\">" + (i + 1) + ". " + highscores["data"][i].name + "</td><td class=\"right\">" + highscores["data"][i].score + "</td></tr>";
 			}
 
+			document.getElementById("title").innerHTML = "Top " + highscores["data"].length + " Balloon Poppers";
+			
 			$(rows).appendTo("#highscores-table tbody");
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
